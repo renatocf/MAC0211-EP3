@@ -1,0 +1,30 @@
+# Binaries
+*~
+bin/
+conf/dependencies.mk
+
+# LaTeX
+*.log
+*.aux
+*.out
+*.pdf
+
+# Bash files (for a while)
+*.bash
+
+# Object files
+*.o
+
+# Libraries
+*.lib
+*.a
+
+# Shared objects
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app

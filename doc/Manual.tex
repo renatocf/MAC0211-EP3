@@ -1,0 +1,179 @@
+\documentclass[a4paper,12pt]{article}
+
+% --------------------------------------------------------------------------- %
+\usepackage[utf8]{inputenc}             % Encodamento utf-8
+\usepackage[brazil]{babel}              % Parcote para texto em português
+
+\usepackage{setspace}                   % Espaçamento flexível
+\usepackage{indentfirst}                % Indentação do primeiro parágrafo
+\usepackage[fixlanguage]{babelbib}      % Opções extras para linguagem
+
+\usepackage[usenames,svgnames,dvipsnames]{xcolor}
+\usepackage[font=small,format=plain,labelfont=bf,up,textfont=it,up]{caption}
+\usepackage[a4paper,top=2.54cm,bottom=2.0cm,left=2.0cm,right=2.54cm]{geometry}
+
+\usepackage[pdftex,plainpages=false,pdfpagelabels,pagebackref,colorlinks=true,citecolor=DarkGreen,linkcolor=NavyBlue,urlcolor=DarkCornflowerBlue,filecolor=green,bookmarksopen=true]{hyperref} 				% links coloridos
+\usepackage[all]{hypcap}                % soluciona o problema com o hyperref 
+					% e capitulos
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \pagenumbering{arabic}     % começamos a numerar 
+  \begin{document}
+
+  \begin{center} 
+	{\LARGE \textcolor{NavyBlue}{ \textbf{Manual de usuário - Jogo das Canoas}}}
+  \end{center}
+
+  \bigskip
+  \bigskip
+
+  O Jogo das Canoas consiste, nessa fase inicial, em gerar um rio com 
+  características atribuídas pelo próprio usuário, sendo essas características 
+  frequência e tamanho de ilhas e velocidade, largura, altura e tamanho máximo 
+  das margens do rio. Sendo como se este pudesse alterar a dificuldade do jogo.
+
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{\textcolor{NavyBlue}{Compilação}}
+
+Para compilar o jogo, entre na pasta onde o seu jogo e utilize o seguinte comando no terminal:
+
+\$ \textcolor{CornflowerBlue}{\textit{make}}
+
+\bigskip
+\section{\textcolor{NavyBlue}{Execução}}
+
+  Para inicializar o jogo, após compilá-lo, digite no próprio terminal:
+  
+  \$ \textcolor{CornflowerBlue}{\textit{./bin/ep2}}
+  
+  Digitando apenas o solicitado acima, o jogo terá caracteríscaticas com valores 
+  default, atribuídos pelo programador. Caso você queira configurar as características
+  deste, acrescente os comandos abaixo ao comando acima. Será mostrado um exemplo para
+  auxiliar o compreendimento.
+
+
+  \bigskip
+  \subsection{\textcolor{NavyBlue}{Características adicionais}}
+
+  O usuário poderá modificar as seguintes características via linha de comando:
+
+  \bigskip
+  \begin{itemize}
+  
+  \item Fluxo do rio . . . . . . . . . . . . . . . . . . .  \textcolor{CornflowerBlue}{-F}
+  \item Altura do rio. . . . . . . . . . . . . . . . . . .  \textcolor{CornflowerBlue}{-H}
+  \item Largura do rio . . . . . . . . . . . . . . . . . .  \textcolor{CornflowerBlue}{-L}
+  \item Frequência das ilhas . . . . . . . . . . . . . . .  \textcolor{CornflowerBlue}{-i} 
+  \item Distância de segurança entre ilhas. . . . . . .  \textcolor{CornflowerBlue}{-f}
+  \item Semente geradora de aleatoriedade . . . . . .  \textcolor{CornflowerBlue}{-s}
+  
+  \end{itemize}
+  \bigskip
+  
+  Observação: Existe uma opção adicional \textcolor{CornflowerBlue}{-h}, caso você precise de AJUDA.
+  
+  \newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \subsection{\textcolor{NavyBlue}{Exemplos de utilização:}}
+  \bigskip
+  
+    \subsubsection{\textcolor{NavyBlue}{Exemplo 1}}
+    \bigskip
+    \begin{itemize}
+  
+    \item Altura do rio = 30  . . \textcolor{CornflowerBlue}{-H30}
+    \item Largura do rio = 60  . . \textcolor{CornflowerBlue}{-L60}  
+    \item Distância mínima entre as margens = 35  . . \textcolor{CornflowerBlue}{-Z20}
+    
+    \end{itemize}  
+    \bigskip
+    
+    \$ \textcolor{CornflowerBlue}{\textit{make}}
+    
+    \$ \textcolor{CornflowerBlue}{\textit{./bin/ep2 -H30 -L60 -Z20}}
+  
+    \bigskip
+    \begin{verbatim}
+    #########..........................................#########
+    #########.........................................##########
+    ########...........................................#########
+    #########.........................................##########
+    ########.........................................###########
+    ########.........................................###########
+    #########.........................................##########
+    ##########.......................................###########
+    ###########......................................###########
+    ###########.........................############.###########
+    ############......................................##########
+    ###########.......................................##########
+    ##########.........................................#########
+    #########...........................................########
+    #########..........................................#########
+    ##########........................................##########
+    #########..........................................#########
+    ########..........................................##########
+    #######............................................#########
+    ########..........................................##########
+    ########..........................................##########
+    #######.......................##########.........###########
+    #######.........................................############
+    ######..........................................############
+    #######.........................................############
+    #######..........................................###########
+    ######...........................................###########
+    #####.........########............................##########
+    #####..............................................#########
+    #####..............................................#########
+    \end{verbatim}
+  
+  \newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \subsubsection{\textcolor{NavyBlue}{Exemplo 2}}
+    
+    \begin{itemize}
+    \bigskip
+    
+    \item Fluxo do rio = 20  . . \textcolor{CornflowerBlue}{-F20}  
+    \item Altura do rio = 25  . . \textcolor{CornflowerBlue}{-H25}
+    \item Largura do rio = 65  . . \textcolor{CornflowerBlue}{-L65}
+    \item Frequência das ilhas = 80\%  . . \textcolor{CornflowerBlue}{-i0.8}
+    \item Distância mínima entre ilhas = 2  . . \textcolor{CornflowerBlue}{-f2}
+    \item Semente geradora de aleatoriedade = 10  . . \textcolor{CornflowerBlue}{-s10}
+    \item Distância mínima entre as margens = 35  . . \textcolor{CornflowerBlue}{-Z35}
+    
+    \end{itemize}  
+    \bigskip
+    
+    \$ \textcolor{CornflowerBlue}{\textit{make}}
+    
+    \$ \textcolor{CornflowerBlue}{\textit{./bin/ep2 -F20 -H25 -L65 -i0.8 -f2 -s10 -Z35}}
+    
+    \bigskip
+    \begin{verbatim}
+    #.......................###......................#
+    #................................................#
+    ##..............................................##
+    ##........##########............................##
+    #...............................................##
+    ##...............................................#
+    ##...................#################..........##
+    ##..............................................##
+    ###..............................................#
+    ####............................###############.##
+    #####...........................................##
+    ####............................................##
+    #####..........#########.........................#
+    #####............................................#
+    #####...........................................##
+    #####............................................#
+    ######..........................................##
+    ######...........................................#
+    #######.......##################.................#
+    #######..........................................#
+    ######...........................................#
+    #####........##########..........................#
+    ####.............................................#
+    #####...........................................##
+    #####...........................................##
+    \end{verbatim}
+
+\end{document}
