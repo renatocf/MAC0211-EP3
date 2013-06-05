@@ -19,7 +19,7 @@ TESTDIR := test
 VPATH = $(SRCDIR):$(LIBDIR):$(BINDIR):$(TESTDIR)
 
 # SOURCE ###############################################################
-BIN := ep2
+BIN := ep3
 SRC := $(shell ls $(SRCDIR))
 LIB := $(CONFDIR)/libraries.mk
 DEP := $(CONFDIR)/dependencies.mk
@@ -36,7 +36,8 @@ CFLAGS := -ansi -Wall -pedantic -g -fPIC
 # LINKER ###############################################################
 LDLIBS  := -L$(LIBDIR)
 LDFLAGS := -Wl,-rpath,$(LIBDIR)
-LDFLAGS += -lm
+LDFLAGS += -lm 
+LDFLAGS += -lallegro -lallegro_primitives
 LDFLAGS += $(filter -l%,$(patsubst lib%.a,-l%,$(LIBS))) \
  		   $(filter -l%,$(patsubst lib%.so,-l%,$(LIBS)))
 

@@ -14,6 +14,7 @@
 #include "river.h"
 #include "strip.h"
 #include "getopt.h"
+#include "allegro.h"
 
 /*
 ////////////////////////////////////////////////////////////////////////
@@ -122,6 +123,11 @@ int main(int argc, char **argv)
     river_config_size    (args.L, args.H);
     river_config_island  (args.i, args.f);
     river_config_margins (args.Z);
+
+    /** INTERFACE GRÁFICA *********************************************/
+    gui_init();
+    gui_create_window(LENGTH*5, HEIGHT*5);
+    gui_create_land(100, 100);
 
     /** ANIMAÇÃO DO RIO ***********************************************/
     river_animation_generate(args.s);

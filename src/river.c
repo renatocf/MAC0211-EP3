@@ -9,6 +9,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/* Bibliotecas gráficas */
+#include "allegro.h"
+
 /* bibliotecas internas */
 #include "list.h"
 #include "utils.h"
@@ -44,6 +47,8 @@ void river_config_margins(int zone)
     Config.zone = zone;
 }
 
+static int frame_height;
+
 /*
 ////////////////////////////////////////////////////////////////////////
 -----------------------------------------------------------------------
@@ -64,6 +69,8 @@ void river_animation_generate(int seed)
     int freq = Config.freq_island;   /* Distancia entre as ilhas     */
     float prob = Config.prob_island; /* Probabilidade de haver ilha  */
     Link new_node;
+
+    frame_height = 0; /* Zera altura do frame de impressão para o rio */
 
     /* Inicializa semente geradora de faixas de terreno
      * e cria lista para colocá-las: nosso cenário */
@@ -86,7 +93,9 @@ void river_animation_generate(int seed)
     }
 
     /** IMPRIME RIO ***************************************************/
+    al_clear_to_color(al_map_rgb(0, 0, 0));
     list_select(river, HEAD, strip_print);
+    al_flip_display();
 }
 
 void river_animation_iterate()
@@ -98,9 +107,10 @@ void river_animation_iterate()
     int zone = Config.zone;         /* Zona de conforto          */
     Link new_node;
 
-    /** AVANÇA FAIXA DE TERRENO ***************************************/
+    frame_height = 0; /* Zera altura do frame de impressão para o rio */
 
-   /* Libera linha do topo do grid ('saindo da tela') */
+    /** AVANÇA FAIXA DE TERRENO ***************************************/
+    /* Libera linha do topo do grid ('saindo da tela') */
     new_node = list_prev(list_head(river));
     list_remove(river, new_node);
 
@@ -109,19 +119,37 @@ void river_animation_iterate()
     base = top;
     list_insert(river, new_node);
 
-
-
     /** IMPRIME RIO ***************************************************/
+    al_clear_to_color(al_map_rgb(0, 0, 0));
     list_select(river, HEAD, strip_print);
-
+    al_flip_display();
 }
 
 void strip_print(TStrip strip)
 {
     int i = 0; /* Contador */
-    for(i = 0; i < Config.length; i++)
-        printf("%c", strip[i].t);
-    printf("\n");
+
+
+    gui_create_land(0, frame_height);
+    for(i = 1; i < Config.length-1; i++)
+        /* if(strip[i].t == LAND && (strip[i+1] != WATER || strip[i-1] != WATER))*/
+        if(strip[i].t == LAND && strip[i+1].t == WATER)
+            gui_create_margin_left(i * 5, frame_height);
+        else if(strip[i].t == LAND && strip[i-1].t == WATER)
+            gui_create_margin_right(i * 5, frame_height);
+        else if(strip[i].t == LAND)
+            gui_create_land(i * 5, frame_height);
+        else if(strip[i].t == WATER)
+            gui_create_water(i * 5, frame_height);
+        /*printf("%c", strip[i].t);*/
+
+    gui_create_land(i * 5, frame_height);
+
+    al_rest(1.4e-3);
+
+
+    frame_height += 5;
+    /*printf("\n");*/
 }
 
 void river_animation_finish()
