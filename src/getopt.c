@@ -1,4 +1,20 @@
-#include<string.h>
+/***************************************************/
+/**  MAC 0211  -  Laboratório de Programação I    **/
+/**  IME-USP   -  Primeiro  Semestre  de    2013  **/
+/**  Turma 45  -  Kelly Rosa Bragheto             **/
+/**                                               **/
+/**  Segundo   Exercício-Programa                 **/
+/**  Arquivo:  getopt.c                           **/
+/**                                               **/
+/**  Karina Suemi Awoki                  7572102  **/
+/**  Renato Cordeiro Ferreira            7990933  **/
+/**  Ruan de Menezes Costa               7990929  **/
+/**                                               **/
+/**  Em caso de eventuais problemas, acesse:      **/
+/**  git@github.com:renatocf/MAC0211-EP2.git      **/
+/***************************************************/ 
+
+#include <string.h>
 #include "getopt.h"
 
 int optind = 1;
@@ -113,7 +129,7 @@ char getopt(int argc, char **argv, char *optstring)
                 if(arg_position != NONE)
                     move_to_init(argv, arg_position);
                 
-                if(option == '?') return '?';
+                if(option == '?') { return '?'; }
                 /* Opção desconhecida */
                 
                 return option;

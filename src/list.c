@@ -1,7 +1,48 @@
-#include <stdlib.h>
+/***************************************************/
+/**  MAC 0211  -  Laboratório de Programação I    **/
+/**  IME-USP   -  Primeiro  Semestre  de    2013  **/
+/**  Turma 45  -  Kelly Rosa Bragheto             **/
+/**                                               **/
+/**  Segundo   Exercício-Programa                 **/
+/**  Arquivo:  list.c                             **/
+/**                                               **/
+/**  Karina Suemi Awoki                  7572102  **/
+/**  Renato Cordeiro Ferreira            7990933  **/
+/**  Ruan de Menezes Costa               7990929  **/
+/**                                               **/
+/**  Em caso de eventuais problemas, acesse:      **/
+/**  git@github.com:renatocf/MAC0211-EP2.git      **/
+/***************************************************/ 
 
+/*
+////////////////////////////////////////////////////////////////////////
+-----------------------------------------------------------------------
+                              BIBLIOTECAS
+-----------------------------------------------------------------------
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+*/
+
+/* Bibliotecas padrão */
+#include <stdlib.h>
+#include <stdio.h>
+
+/* Bibliotecas internas */
 #include "utils.h"
 #include "list-internal.h"
+
+/*
+////////////////////////////////////////////////////////////////////////
+-----------------------------------------------------------------------
+                                 FUNÇÕES    
+-----------------------------------------------------------------------
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+*/
+
+/* 'Getters' para estruturas da lista */
+Link  list_head (List list) { return list->head; }
+Link  list_next (Link node) { return node->next; }
+Link  list_prev (Link node) { return node->prev; }
+LItem list_item (Link node) { return node->item; }
 
 List list_init(int N)
 {
@@ -9,6 +50,7 @@ List list_init(int N)
     new->head = (Link) mallocSafe(sizeof(*new->head));
     new->head->next = new->head;
     new->head->prev = new->head;
+    new->head->item = NULL;
     return new;
 }
 
@@ -23,10 +65,16 @@ Link list_new_node(LItem item)
 
 void list_free(List list)
 {
-    while(!list_empty(list))
-        list_remove(list, list->head->next);
-    free(list_head(list));
-    free(list);
+    Link dead;
+    while(list != NULL && !list_empty(list))
+    {
+        dead = list_remove(list, list->head->next);
+        free(dead->item);
+        free(dead);
+    }
+
+    if(list != NULL) free(list_head(list));
+    if(list != NULL) free(list);
 }
 
 int list_empty(List list)
@@ -36,7 +84,7 @@ int list_empty(List list)
     return 0;
 }
 
-void list_remove(List list, Link node)
+Link list_remove(List list, Link node)
 {
     Link aux;
     aux = node->prev;
@@ -44,6 +92,7 @@ void list_remove(List list, Link node)
     if(node->next != NULL) node->next->prev = aux;
     node->next = NULL;
     node->prev = NULL;
+    return node;
 }
 
 void list_insert(List list, Link new)
@@ -52,26 +101,6 @@ void list_insert(List list, Link new)
     new->prev = list->head;
     new->next->prev = new;
     new->prev->next = new;
-}
-
-Link  list_head(List list)
-{
-    return list->head;
-}
-
-Link  list_next(Link node)
-{
-    return node->next;
-}
-
-Link  list_prev(Link node)
-{
-    return node->prev;
-}
-
-LItem list_item(Link node)
-{
-    return node->item;
 }
 
 void list_select(List list, int direction, void (*visit) (LItem))
