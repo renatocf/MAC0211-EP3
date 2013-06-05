@@ -1,4 +1,0 @@
--s3 -L25 -H15 -l4 -r16
-./bin/ep2 -H 2 -L 10 -l1 -r8 -I0 -s666 (problemas na glibc)
-./bin/ep2 -H 2 -L 3 -l1 -r3 -I0 -s666 (Ãgua nos cantos)
-./bin/ep2 -s743 -Z2 -H1 -L5
