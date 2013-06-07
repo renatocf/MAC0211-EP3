@@ -45,19 +45,9 @@ void gui_create_land(float x1, float y1)
 
 void gui_create_water(float x1, float y1)
 {
-    al_draw_filled_circle(x1+2.5, y1+2.5, 4.5, al_map_rgb(100, 149, 237));
-    /* al_draw_filled_rectangle(x1, y1, x1+5, y1+5, al_map_rgb(100, 149, 237));*/
+    al_draw_filled_rectangle(x1, y1, x1+5, y1+5, al_map_rgb(100, 149, 237));
 }
 
-void gui_create_margin_left(float x1, float y1)
-{
-    al_draw_filled_circle(x1+2.5, y1+2.5, 4.5, al_map_rgb(139, 69, 19));
-}
-
-void gui_create_margin_right(float x1, float y1)
-{
-    al_draw_filled_circle(x1+2.5, y1+2.5, 4.5, al_map_rgb(139, 69, 19));
-}
 
 void gui_init()
 {
@@ -88,38 +78,18 @@ int gui_close_window()
         return 0;
 }
 
-/*bool inicializar()
+void gui_create_margin_land_water(int x1, int y1, int x2, int y2, int x3, int y3)
 {
-    if (!al_init())
-    {
-        fprintf(stderr, "Falha ao inicializar Allegro.\n");
-        return false;
-    }
+    /* Triângulo preenchido: x1, y1, x2, y2, x3, y3, cor*/
+    al_draw_filled_triangle(x1, y1, x2, y2, x3, y3, al_map_rgb(139, 69, 19));
+    al_draw_filled_triangle(x2, y2, x3, y3, x2, y3, al_map_rgb(100, 149, 237));
 
-    if (!al_init_primitives_addon())
-    {
-        fprintf(stderr, "Falha ao inicializar add-on allegro_primitives.\n");
-        return false;
-    }
+    /*al_draw_filled_triangle(x1, y1, x2, y2, x3, y3, al_map_rgb(255, 20, 147));
+    al_draw_filled_triangle(x2, y2, x3, y3, x2, y3, al_map_rgb(255, 255, 0));*/
+}
 
-    janela = al_create_display(LARGURA_TELA, ALTURA_TELA);
-    if (!janela)
-    {
-        fprintf(stderr, "Falha ao criar janela.\n");
-        return false;
-    }
-
-    al_set_window_title(janela, "Animando!!!");
-
-    fila_eventos = al_create_event_queue();
-    if (!fila_eventos)
-    {
-        fprintf(stderr, "Falha ao criar fila de eventos.\n");
-        al_destroy_display(janela);
-        return false;
-    }
-
-    al_register_event_source(fila_eventos, al_get_display_event_source(janela));
-
-    return true;
-}*/
+void teste(int x1, int y1)
+{
+    printf("00000 \n");
+    al_draw_filled_rectangle(x1, y1, x1+5, y1+5, al_map_rgb(0,0 ,0));
+}
