@@ -12,7 +12,7 @@
 /**                                               **/
 /**  Em caso de eventuais problemas, acesse:      **/
 /**  git@github.com:renatocf/MAC0211-EP2.git      **/
-/***************************************************/ 
+/***************************************************/
 
 /*
 ////////////////////////////////////////////////////////////////////////
@@ -42,7 +42,7 @@
 
 /* Padrões para a gerar o rio */
 #define FLUX       73.54
-#define HEIGHT     30
+#define HEIGHT     150
 #define LENGTH     100
 #define ITERATIONS 10
 #define ZONE       10
@@ -74,7 +74,7 @@ typedef struct options
     int s;    /* Semente */
     int f;    /* Frequência com que as ilhas aparecem
                  (em número de linhas) */
-    
+
     /* Nome da saída do relatório */
     char o[SIZE_NAME];
 
@@ -109,7 +109,7 @@ char help[] = "Jogo das canoas!\n"
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 */
 static int  receive_arguments (int argc, char **argv, Options *args);
-static int  menu              (Options *args); 
+static int  menu              (Options *args);
 static void configurations    (Options *args);
 
 /*
@@ -124,6 +124,7 @@ int main(int argc, char **argv)
     /** VARIÁVEIS *****************************************************/
     int func_err; int test_mode = 0;
     clock_t init, end;
+    int sair = 0;
 
     /* Struct com argumentos da linha de comando */
     Options args = { FLUX, HEIGHT, LENGTH, ITERATIONS, ZONE, ISLAND,
@@ -132,43 +133,42 @@ int main(int argc, char **argv)
     /** ARGUMENTOS/MENU ***********************************************/
     func_err = receive_arguments(argc, argv, &args);
     if(func_err) return EXIT_FAILURE;
-    
+
     if(args.h == 1)
     {
         printf("\n%s\n", help);
         return EXIT_SUCCESS;
     }
-    
+
     /* Modo de teste: */
     test_mode = args.t + args.T;
-    
+
     /* Chamada para o nosso menu do usuário:
      * Quando ele devolve 'falha', o usuário quer sair do jogo */
     if(!test_mode) func_err = menu(&args);
     if(func_err == EXIT_FAILURE) return EXIT_SUCCESS;
-    
+
     /** CONFIGURAÇÕES DO RIO ******************************************/
     river_config_flux    (args.F);
     river_config_size    (args.L, args.H);
     river_config_island  (args.i, args.f);
     river_config_margins (args.Z);
-    
+
     /** INTERFACE GRÁFICA *********************************************/
     gui_init();
     gui_create_window(LENGTH*5, HEIGHT*5);
-    gui_create_land(100, 100);
 
     /** ANIMAÇÃO DO RIO ***********************************************/
     test_mode = args.t + args.T;
     if(test_mode) analyse_program(args.s, args.N, test_mode, args.o);
-    else 
+    else
     {
         river_animation_generate(args.s);
-        while(1)
+        while(!sair)
         {
             for(end = init = clock(); end-init < INTERVAL; end = clock());
-            system("clear || cls");
-            river_animation_iterate();
+            /*system("clear || cls");*/
+            sair = river_animation_iterate();
         }
     }
 
@@ -246,7 +246,7 @@ static int menu(Options *args)
 {
     int option;
     system("clear||cls"); /* Limpa a tela */
-    
+
     while(1)
     {
         /* Nossa ASCII Art: */
@@ -280,37 +280,37 @@ static int menu(Options *args)
         printf(" 4) Modo teste (completo)                                           \n");
         printf(" 5) Sair                                                            \n");
         printf("                                                                    \n");
-        
+
         /* Seleciona opção */
         while(1)
         {
             printf(" Selecione sua opção: ");
             scanf(" %d", &option);
-            
+
             /* JOGAR */
-            if(option == 1)     
+            if(option == 1)
             { return EXIT_SUCCESS; }
-            
+
             /* CONFIGURAÇÕES */
-            else if(option == 2) 
+            else if(option == 2)
             { configurations(args); break; }
-            
+
             /* MODO TESTE (SIMPLES) */
-            else if(option == 3) 
+            else if(option == 3)
             { args->t = 1;  return EXIT_SUCCESS; }
-            
+
             /* MODO TESTE (COMPLETO) */
-            else if(option == 4) 
+            else if(option == 4)
             { args->T = 2; return EXIT_SUCCESS; }
-            
+
             /* SAIR */
-            else if(option == 5) 
+            else if(option == 5)
             { return EXIT_FAILURE; }
-            
+
             /* ERRO */
-            else                 
+            else
             { printf(" Opção não reconhecida!\n"); }
-            
+
         } /* while das opções */
     } /* while do menu */
 }
@@ -319,28 +319,28 @@ static void configurations(Options *args)
 {
     char ans;
     printf(" Insira as configurações:\n");
-    
+
     printf(" Deseja configurar o fluxo do rio? "); scanf(" %c", &ans);
-    if(ans == 's' || ans == 'y' || ans == 'S' || ans == 'Y') 
+    if(ans == 's' || ans == 'y' || ans == 'S' || ans == 'Y')
     { printf(" Fluxo do rio: "); scanf("%f", &args->F); }
-    
+
     printf(" Deseja configurar a altura do rio? "); scanf(" %c", &ans);
-    if(ans == 's' || ans == 'y' || ans == 'S' || ans == 'Y') 
+    if(ans == 's' || ans == 'y' || ans == 'S' || ans == 'Y')
     { printf(" Altura do rio: "); scanf("%d", &args->H); }
-    
+
     printf(" Deseja configurar a largura do rio? "); scanf(" %c", &ans);
-    if(ans == 's' || ans == 'y' || ans == 'S' || ans == 'Y') 
+    if(ans == 's' || ans == 'y' || ans == 'S' || ans == 'Y')
     { printf(" Largura do rio: "); scanf("%d", &args->L); }
-    
+
     printf(" Deseja configurar a distância mínima entre as margens? "); scanf(" %c", &ans);
-    if(ans == 's' || ans == 'y' || ans == 'S' || ans == 'Y') 
+    if(ans == 's' || ans == 'y' || ans == 'S' || ans == 'Y')
     { printf(" Distância mínima das margens: "); scanf("%d", &args->Z); }
-    
+
     printf(" Deseja configurar a distância mínima entre ilhas? "); scanf(" %c", &ans);
-    if(ans == 's' || ans == 'y' || ans == 'S' || ans == 'Y') 
+    if(ans == 's' || ans == 'y' || ans == 'S' || ans == 'Y')
     { printf(" Distancia mínima entre ilhas: "); scanf("%d", &args->f); }
-    
+
     printf(" Deseja configurar a probabilidade de gerar ilhas? "); scanf(" %c", &ans);
-    if(ans == 's' || ans == 'y' || ans == 'S' || ans == 'Y') 
+    if(ans == 's' || ans == 'y' || ans == 'S' || ans == 'Y')
     { printf(" Probabilidade de gerar ilhas: "); scanf("%f", &args->i); }
 }

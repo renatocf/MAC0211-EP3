@@ -12,7 +12,7 @@
 /**                                               **/
 /**  Em caso de eventuais problemas, acesse:      **/
 /**  git@github.com:renatocf/MAC0211-EP2.git      **/
-/***************************************************/ 
+/***************************************************/
 
 #ifndef H_RIVER_DEFINED
 #define H_RIVER_DEFINED
@@ -25,7 +25,7 @@ void river_config_margins     (int);        /* zona de conforto */
 
 /* Funções para controle de animação */
 void river_animation_generate (int);        /* semente */
-void river_animation_iterate  ();
+int river_animation_iterate  ();
 void river_animation_finish   ();
 
 #endif

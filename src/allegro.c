@@ -11,6 +11,8 @@
 
 void gui_create_window(int length, int height)
 {
+    fila_eventos = NULL;
+    fila_eventos = al_create_event_queue();
     /* Variável representando a janela principal */
     window = NULL;
 
@@ -25,12 +27,15 @@ void gui_create_window(int length, int height)
 
     /* Atualiza a tela */
     al_flip_display();
+    if (!fila_eventos)
+    {
+        fprintf(stderr, "Falha ao criar fila de eventos.\n");
+        al_destroy_display(window);
+    }
 
-    /* Segura a execução por 10 segundos -->tempo infinito
-    al_rest(10.0); */
+    al_set_window_title(window, "Jogo da canoa");
+    al_register_event_source(fila_eventos, al_get_display_event_source(window));
 
-    /* Finaliza a janela
-    al_destroy_display(janela); */
 }
 
 void gui_create_land(float x1, float y1)
@@ -60,3 +65,61 @@ void gui_init()
     al_init();
     al_init_primitives_addon();
 }
+
+void gui_create_boat(float x, float y)
+{
+    al_draw_filled_ellipse(x, y -20.0 ,10.0 , 20.0, al_map_rgb(0,205,102));
+}
+
+int gui_close_window()
+{
+    if (!al_is_event_queue_empty(fila_eventos))
+        {
+            ALLEGRO_EVENT evento;
+            al_wait_for_event(fila_eventos, &evento);
+
+            if (evento.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+            {
+                al_destroy_event_queue(fila_eventos);
+                al_destroy_display(window);
+                return 1;
+            }
+        }
+        return 0;
+}
+
+/*bool inicializar()
+{
+    if (!al_init())
+    {
+        fprintf(stderr, "Falha ao inicializar Allegro.\n");
+        return false;
+    }
+
+    if (!al_init_primitives_addon())
+    {
+        fprintf(stderr, "Falha ao inicializar add-on allegro_primitives.\n");
+        return false;
+    }
+
+    janela = al_create_display(LARGURA_TELA, ALTURA_TELA);
+    if (!janela)
+    {
+        fprintf(stderr, "Falha ao criar janela.\n");
+        return false;
+    }
+
+    al_set_window_title(janela, "Animando!!!");
+
+    fila_eventos = al_create_event_queue();
+    if (!fila_eventos)
+    {
+        fprintf(stderr, "Falha ao criar fila de eventos.\n");
+        al_destroy_display(janela);
+        return false;
+    }
+
+    al_register_event_source(fila_eventos, al_get_display_event_source(janela));
+
+    return true;
+}*/

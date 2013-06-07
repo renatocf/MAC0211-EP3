@@ -98,7 +98,7 @@ void river_animation_generate(int seed)
     al_flip_display();
 }
 
-void river_animation_iterate()
+int river_animation_iterate()
 {
     /** VARIÁVEIS *****************************************************/
     TStrip top/*, bottom*/;
@@ -120,9 +120,15 @@ void river_animation_iterate()
     list_insert(river, new_node);
 
     /** IMPRIME RIO ***************************************************/
+    /* Elipse preenchido: x1, y1, raio x, raio y, cor */
+
     al_clear_to_color(al_map_rgb(0, 0, 0));
     list_select(river, HEAD, strip_print);
+    gui_create_boat(Config.length*2.5, frame_height);
     al_flip_display();
+    if(gui_close_window())
+        return 1;
+    return 0;
 }
 
 void strip_print(TStrip strip)
