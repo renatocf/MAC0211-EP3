@@ -155,8 +155,7 @@ int main(int argc, char **argv)
     river_config_margins (args.Z);
 
     /** INTERFACE GRÁFICA *********************************************/
-    gui_init();
-    gui_create_window(LENGTH*5, HEIGHT*5);
+    river_animation_init();
 
     /** ANIMAÇÃO DO RIO ***********************************************/
     test_mode = args.t + args.T;
