@@ -87,9 +87,3 @@ void gui_create_margin_land_water(int x1, int y1, int x2, int y2, int x3, int y3
     /*al_draw_filled_triangle(x1, y1, x2, y2, x3, y3, al_map_rgb(255, 20, 147));
     al_draw_filled_triangle(x2, y2, x3, y3, x2, y3, al_map_rgb(255, 255, 0));*/
 }
-
-void teste(int x1, int y1)
-{
-    printf("00000 \n");
-    al_draw_filled_rectangle(x1, y1, x1+5, y1+5, al_map_rgb(0,0 ,0));
-}
