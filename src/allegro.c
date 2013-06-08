@@ -58,7 +58,7 @@ void gui_init()
 
 void gui_create_boat(float x, float y)
 {
-    al_draw_filled_ellipse(x, y -20.0 ,10.0 , 20.0, al_map_rgb(0,205,102));
+    al_draw_filled_ellipse(x, y -20.0 ,10.0 , 20.0, al_map_rgb(139, 87, 66));
 }
 
 int gui_close_window()
