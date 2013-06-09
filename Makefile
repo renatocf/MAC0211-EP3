@@ -5,6 +5,7 @@
 # PROGRAMS #############################################################
 AR := ar
 CC := gcc
+CP := cp -f
 RM := rm -f
 SED := sed
 FMT := fmt -1
@@ -66,6 +67,7 @@ all: $(DEP) $(addprefix $(BINDIR)/,$(BIN))
 doc:
 	$(MAKE) -C $(DOCDIR)
 
+# CLEAN ################################################################
 .PHONY: clean
 clean:
 	$(RM) $(OBJDIR)/*.o $(LIBDIR)/*.a $(LIBDIR)/*.so
@@ -78,7 +80,7 @@ endif
 
 .PHONY: distclean
 distclean:
-	$(RM) $(BINDIR)/$(BIN)
+	$(RM) $(BINDIR)/$(BIN) $(CONFDIR)/*.d
 	-$(RMDIR) $(BINDIR) $(LIBDIR) 2> /dev/null
 
 # EXECUTABLE ###########################################################
@@ -94,7 +96,7 @@ $(LIBS): | $(LIBDIR)
 
 # DEPENDENCIES #########################################################
 $(CONFDIR)/%.d: $(addprefix $(SRCDIR)/,%.c)
-	$(CC) $(CLIBS) -MM $< $(LDLIBS) 1> $@
+	$(CC) $(CLIBS) -MM $< 1> $@
 	@$(CP)  $@ $@.tmp
 	@$(SED) -e 's/.*:/$(OBJDIR)\/$*.o:/' -i $@
 	@$(SED) -e 's/.*://' -e 's/\\$$//' < $@.tmp | $(FMT) | \
