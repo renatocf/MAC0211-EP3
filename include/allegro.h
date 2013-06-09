@@ -11,6 +11,8 @@ ALLEGRO_EVENT_QUEUE *event_queue;
 void gui_init();
 
 /* Funções de criação de janelas */
+void gui_window_clear   (void);
+void gui_window_update  (void);
 void gui_window_create  (int length, int height);
 int  gui_window_destroy (void);
 

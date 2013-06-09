@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=canoa
+Comment=Desvie sua canoa de obstáculos no rio!
+Exec=/usr/bin/canoa
+Icon=/usr/share/icons/canoa.png
+Terminal=true
+Type=Application
+Categories=Games;ComputerScience;C;

@@ -16,6 +16,9 @@
 /* Bibliotecas internas */
 #include "allegro.h"
 
+/* Macros */
+#define WINDOW_DEFATULT_COLOR (0, 0, 0)
+
 /*
 ////////////////////////////////////////////////////////////////////////
 -----------------------------------------------------------------------
@@ -67,10 +70,10 @@ int gui_window_destroy(void)
 {
     if (!al_is_event_queue_empty(event_queue))
     {
-        ALLEGRO_EVENT evento;
-        al_wait_for_event(event_queue, &evento);
+        ALLEGRO_EVENT event;
+        al_wait_for_event(event_queue, &event);
 
-        if (evento.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+        if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
         {
             al_destroy_event_queue(event_queue);
             al_destroy_display(window);
@@ -78,6 +81,16 @@ int gui_window_destroy(void)
         }
     }
     return 0;
+}
+
+void gui_window_clear()
+{
+    al_clear_to_color(al_map_rgb(0, 0, 0));
+}
+
+void gui_window_update()
+{
+    al_flip_display();
 }
 
 /*

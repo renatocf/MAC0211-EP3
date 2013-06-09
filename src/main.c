@@ -154,11 +154,10 @@ int main(int argc, char **argv)
     river_config_island  (args.i, args.f);
     river_config_margins (args.Z);
 
-    /** INTERFACE GRÁFICA *********************************************/
-    river_animation_init();
-
     /** ANIMAÇÃO DO RIO ***********************************************/
     test_mode = args.t + args.T;
+    
+    river_animation_init();
     if(test_mode) analyse_program(args.s, args.N, test_mode, args.o);
     else
     {
@@ -166,7 +165,6 @@ int main(int argc, char **argv)
         while(!sair)
         {
             for(end = init = clock(); end-init < INTERVAL; end = clock());
-            /*system("clear || cls");*/
             sair = river_animation_iterate();
         }
     }

@@ -12,7 +12,7 @@ FMT := fmt -1
 CAT := cat
 LEX  := flex
 YACC := bison
-FIND = find
+FIND = find $(FDIR) -type d
 MAKE += --no-print-directory
 MKDIR := mkdir -p
 RMDIR := rmdir --ignore-fail-on-non-empty
@@ -22,16 +22,17 @@ SRCDIR := src
 OBJDIR := obj
 BINDIR := bin
 LIBDIR := lib
-DOCDIR := man
+DOCDIR := doc
 CONFDIR := conf
 TESTDIR := test
 HEADDIR := include
+INSTDIR := install
 
 -include $(CONFDIR)/directories.mk
 VPATH = $(CONFDIR):$(SRCDIR):$(LIBDIR):$(BINDIR):$(TESTDIR):$(HEADDIR)
 
 # SOURCE ###############################################################
-BIN := ep3
+BIN := canoa
 SRC := $(notdir $(shell ls $(SRCDIR)/*.c))
 LIB := $(CONFDIR)/libraries.mk
 DEP := $(addprefix $(CONFDIR)/,$(SRC:.c=.d))
@@ -41,13 +42,34 @@ OBJ := $(filter-out $(ARLIB) $(SOLIB),$(SRC)) # Tira bibliotecas
 OBJ := $(patsubst %.c,%.o,$(OBJ))             # Substitui .c por .o
 OBJ := $(addprefix $(OBJDIR)/,$(OBJ))         # Adiciona diretório
 
+# INSTALL ##############################################################
+USER     = $(shell whoami)
+ICON 	:= canoa.png
+DESKTOP := canoa.desktop
+
+ifeq ($(USER),root)
+INSTBIN = /usr/bin
+INSTAPP = /usr/share/applications
+INSTICO = /usr/share/icons
+else
+INSTBIN = $(HOME)/.local/bin
+INSTAPP = $(HOME)/.local/applications
+INSTICO = $(HOME)/.local/icons
+endif
+
 # COMPILATION ##########################################################
-CLIBS  := -I. $(patsubst %,-I%,$(filter-out .%,$(shell $(FIND) $(HEADDIR) -type d)))
+FDIR = $(HEADDIR) # Gerando diretórios
+CLIBS  := -I. $(patsubst %,-I%,$(filter-out .%,$(shell $(FIND))))
+
+# Flags para processo de compilação
 CFLAGS := -ansi -Wall -pedantic -g -fPIC
 CFLAGS  += -Wno-implicit-function-declaration
 
 # LINKAGE ##############################################################
-LDLIBS   = -L. $(patsubst %,-L%,$(filter-out .%,$(shell $(FIND) $(LIBDIR) -type d)))
+FDIR = $(LIBDIR) # Gerando bibliotecas
+LDLIBS   = -L. $(patsubst %,-L%,$(filter-out .%,$(shell $(FIND))))
+
+# Flags para processo de ligação
 LDFLAGS := -lm
 LDFLAGS += -lallegro -lallegro_primitives
 LDFLAGS += -Wl,-rpath,$(LIBDIR)
@@ -55,19 +77,35 @@ LDFLAGS += $(filter -l%,$(patsubst lib%.a,-l%,$(LIBS))) \
  		   $(filter -l%,$(patsubst lib%.so,-l%,$(LIBS)))
 
 ########################################################################
-#                               BUILD                                  #
+#                            INSTALLATION                              #
 ########################################################################
 
-# OPTIONS ##############################################################
+# DEFAULT ##############################################################
 .PHONY: all
 all: $(DEP) $(addprefix $(BINDIR)/,$(BIN))
 -include $(DEP)
+
+.PHONY: install
+install:
+	@ echo "Configuring executable..."
+	@ chmod u+x $(BINDIR)/$(BIN)
+	@ $(MKDIR) $(INSTBIN)
+	@ $(CP) $(BINDIR)/$(BIN) $(INSTBIN)
+	@ echo "Creating desktop icon..."
+	@ $(MKDIR) $(INSTAPP)
+	@ $(CP) $(INSTDIR)/$(DESKTOP) $(INSTAPP)/
+	@ $(MKDIR) $(INSTICO)
+	@ $(CP) $(INSTDIR)/$(ICON) $(INSTICO)/
+	@ echo "Canoa successfully installed!"
 
 .PHONY: doc
 doc:
 	$(MAKE) -C $(DOCDIR)
 
-# CLEAN ################################################################
+########################################################################
+#                           SYSTEM CLEAN                               #
+########################################################################
+
 .PHONY: clean
 clean:
 	$(RM) $(OBJDIR)/*.o $(LIBDIR)/*.a $(LIBDIR)/*.so
@@ -82,6 +120,18 @@ endif
 distclean:
 	$(RM) $(BINDIR)/$(BIN) $(CONFDIR)/*.d
 	-$(RMDIR) $(BINDIR) $(LIBDIR) 2> /dev/null
+
+.PHONY: uninstall
+uninstall:
+	@ echo "Removing Canoa..."
+	@ $(RM) $(INSTAPP)/$(DESKTOP)
+	@ $(RM) $(INSTICO)/$(ICON)
+	@ $(RM) $(INSTBIN)/$(BIN)
+	@ echo "Done."
+
+########################################################################
+#                               BUILD                                  #
+########################################################################
 
 # EXECUTABLE ###########################################################
 $(BINDIR)/$(BIN): $(OBJ) | $(LIBS) $(BINDIR)
@@ -145,11 +195,11 @@ $(LIBDIR):
 	-$(MKDIR) $@
 endif
 
-ifneq ($(DOCDIR),.)
-$(DOCDIR):
-	@ echo Creating directory for documents "$@"
-	-$(MKDIR) $@
-endif
+# ifneq ($(DOCDIR),.)
+# $(DOCDIR):
+# 	@ echo Creating directory for documents "$@"
+# 	-$(MKDIR) $@
+# endif
 
 ifneq ($(CONFDIR),.)
 $(CONFDIR):
@@ -168,3 +218,9 @@ $(HEADDIR):
 	@ echo Creating directory for headers "$@"
 	-$(MKDIR) $@
 endif
+
+# ifneq ($(INSTDIR),.)
+# $(INSTDIR):
+# 	@ echo Creating directory with installation files "$@"
+# 	-$(MKDIR) $@
+# endif
