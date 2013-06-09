@@ -217,8 +217,9 @@ void strip_print(TStrip strip)
     }
 
     /* Velocidade do rio */
-    al_rest(pow(1.4, -1*Config.speedy/Config.height));
-
+    /*al_rest(pow(1.4, -1*Config.speedy/(Config.height*Config.height*Config.height)));*/
+    /*al_rest(1.4*pow(10.0, -10));*/
+    al_rest(1.4e-10);
     old_left_margin = old_m_l;
     old_right_margin = old_m_r;
 

@@ -48,6 +48,7 @@
 {\large \textcolor{CornflowerBlue}{\textbf{Bibliotecas (Arquivos .h)}}}
 \begin{verbatim}
 
+allegro.h . . . . . . . . . . . pág. 03
 getopt.h  . . . . . . . . . . . pág. 03
 statistical.h . . . . . . . . . pág. 03
 strip.h . . . . . . . . . . . . pág. 03
@@ -78,20 +79,31 @@ river-internal.h. . . . . . pág. 04
 
 {\large \textcolor{CornflowerBlue}{\textbf{Arquivos .c}}}
 \begin{verbatim}
+allegro.c . . . . . . . . . . . pág. 05
 getopt.c. . . . . . . . . . . . pág. 05
-list.c. . . . . . . . . . . . . pág. 05
-river . . . . . . . . . . . . . pág. 06
-statistical.c . . . . . . . . . pág. 06
-strip.c . . . . . . . . . . . . pág. 07
-test.c. . . . . . . . . . . . . pág. 07
-utils.c . . . . . . . . . . . . pág. 07
+list.c. . . . . . . . . . . . . pág. 06
+river . . . . . . . . . . . . . pág. 07
+statistical.c . . . . . . . . . pág. 07
+strip.c . . . . . . . . . . . . pág. 08
+test.c. . . . . . . . . . . . . pág. 08
+utils.c . . . . . . . . . . . . pág. 08
+
 \end{verbatim}
 
 
 \newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-{\Large \textcolor{NavyBlue}{ \textbf{Bibliotecas  }}}
-{\large \textcolor{CornflowerBlue}{  getopt.h}}
+{\Large \textcolor{NavyBlue}{ \textbf{Bibliotecas  }}}{\large \textcolor{CornflowerBlue}{  allegro.h}}
+\bigskip
+
+Cria as funções que são responsáveis pela imagem gerada em interface gráfica como as que
+desenham quadrados de água, de terra e a elipse que representa o barco. Além de chamar a
+biblioteca allegro e abrir e fechar a janela. 
+\bigskip
+\bigskip
+\bigskip
+
+{\Large \textcolor{NavyBlue}{ \textbf{Bibliotecas  }}}{\large \textcolor{CornflowerBlue}{  getopt.h}}
 \bigskip
 
 Cria a função {\textcolor{CornflowerBlue}{char getopt(int argc, char **argv, char *optstring);}}
@@ -193,12 +205,53 @@ Controla as funções que irão manipular a configuração do rio.
 
 \newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+{\Large \textcolor{NavyBlue}{ \textbf{Arquivos .c  }}}{\large \textcolor{CornflowerBlue}{  allegro.c}}
+\bigskip
+
+Manipula as funções que são responsáveis pela imagem gerada na tela e pela criação e finalização da janela através
+das funções:
+
+{\textcolor{CornflowerBlue}{void gui\_init(void)}} Inicializa a biblioteca allegro. 
+
+{\textcolor{CornflowerBlue}{void gui\_window\_clear(void)}} Pinta a janela inteira com a cor preta (0, 0, 0).  
+
+{\textcolor{CornflowerBlue}{void gui\_window\_update(void)}} Carrega a janela, atualiza as configurações que foram feitas.
+ 
+{\textcolor{CornflowerBlue}{void gui\_window\_create(int length, int height)}} Cria uma janela de altura height e altura length. 
+
+{\textcolor{CornflowerBlue}{int gui\_window\_destroy(void)}} Fecha a janela e finaliza o programa quando o usuário clica em 'X'.
+
+{\textcolor{CornflowerBlue}{void gui\_river\_create\_land(float x1, float y1)}} Desenha quadrados na cor da terra nas 
+coordenas (x1, y1).
+
+{\textcolor{CornflowerBlue}{void gui\_river\_create\_water(float x1, float y1)}} Desenha quadrados na cor da água nas
+coordenadas (x1, y1). 
+
+{\textcolor{CornflowerBlue}{void gui\_river\_create\_margin(int x1, int y1, int x2, int y2, int x3, int y3)}} Desenha triangulos 
+nas cores de terra e água, formando a margem. Essa função faz triangulos com vértices de coordenas (x1, y1), (x2, y2) e (x3, y3) 
+em cor de terra, e como esses triangulos sempre serão metade de quadrados, desenhamos na outra metade do mesmo quadrado,
+ outro triangulo com cor de água.
+
+{\textcolor{CornflowerBlue}{void gui\_boat\_create(float x, float y)}} Desenha uma canoa em forma de elipse, com centro em (x, y).
+
+
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+
 {\Large \textcolor{NavyBlue}{ \textbf{Arquivos .c  }}}{\large \textcolor{CornflowerBlue}{  getopt.c}}
 \bigskip
 
 Este módulo possui a função getopt recebe todos os parâmetros passados para o main pelo usuário, a quantidade de palavras recebidas(arg c) e também, um vetor de chars(optstring) que possui todas as opções de letras possíveis, sendo que este é apontado por um inteiro que controlará os valores já verificados... Como o L (de Largura), o H(de altura), entre outros. Essa função compara, a cada iteração, os valores recebidos pelo main e os valores de optstring... Caso seja encontrado um valor semelhante e ele tenha o "-" antes, esse char é devolvido pela função, ele é movido para o início pela função {\textcolor{CornflowerBlue}{move\_to\_init(char **argv, int initial\_pos);}} (função que se localiza neste mesmo módulo) e o inteiro que aponta para aoptstring passa a apontar para o primeiro valor ainda não verificado.
 
 \bigskip
+\bigskip
+\bigskip
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \bigskip
 \bigskip
 
@@ -253,10 +306,14 @@ que contêm informações de ser água ou terra e velocidade. Sendo h a altura d
 
 {\textcolor{CornflowerBlue}{void river\_animation\_iterate()}} é responsável pela imagem que o usuário verá na tela, pois pegará o valor da altura e juntamente com a função {\textcolor{CornflowerBlue}{void river\_animation\_generate(int seed)}}, gerará um frame do rio, juntando as h faixas de terreno do repectivo frame.
 
-{\textcolor{CornflowerBlue}{void strip\_print(TStrip strip)}} irá imprimir uma determinada linha do rio.
+{\textcolor{CornflowerBlue}{void strip\_print(TStrip strip)}} irá imprimir uma determinada linha do rio em interface gráfica 
+chamando as funções de allegro.h. Nessa função será verificado se determinado pixel é terra, água ou margem para assim poder
+usar a biblioteca allegro através de outas funções.
 
 {\textcolor{CornflowerBlue}{void river\_animation\_finish()}} é responsável por finalizar o rio, desalocando as células utilizadas por ele.
 
+\bigskip
+\bigskip
 \bigskip
 \bigskip
 \bigskip
@@ -291,6 +348,8 @@ Manipula as faixas de terra, que são as linhas da imagem, com as seguintes fun�
 \bigskip
 \bigskip
 \bigskip
+\bigskip
+\bigskip
 
 {\Large \textcolor{NavyBlue}{ \textbf{Arquivos .c  }}}{\large \textcolor{CornflowerBlue}{  test.c}}
 \bigskip
@@ -304,14 +363,13 @@ Manipula as faixas de terra, que são as linhas da imagem, com as seguintes fun�
 \bigskip
 \bigskip
 \bigskip
+\bigskip
+\bigskip
 
 {\Large \textcolor{NavyBlue}{ \textbf{Arquivos .c  }}}{\large \textcolor{CornflowerBlue}{  utils.c}}
 \bigskip
 
 Aloca memória com tamanho size\_t de forma que, caso haja um erro de alocação o programa é finalizado.
-\bigskip
-\bigskip
-\bigskip
 
 
 \end{document}
