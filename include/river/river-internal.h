@@ -12,7 +12,7 @@
 /**                                               **/
 /**  Em caso de eventuais problemas, acesse:      **/
 /**  git@github.com:renatocf/MAC0211-EP2.git      **/
-/***************************************************/ 
+/***************************************************/
 
 #ifndef H_RIVER_INTERNAL_DEFINED
 #define H_RIVER_INTERNAL_DEFINED
@@ -28,6 +28,7 @@ struct conf
     int   zone;
     float prob_island;
     int   freq_island;
+    float speedy;
 };
 
 List river;

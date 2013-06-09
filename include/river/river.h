@@ -22,6 +22,7 @@ void river_config_flux        (float);
 void river_config_size        (int, int);   /* largura/altura */
 void river_config_island      (float, int); /* probabilidade/frequência da ilha */
 void river_config_margins     (int);        /* zona de conforto */
+void river_config_speedy      (float);      /*  velocidade */
 
 /* Funções para controle de animação */
 void river_animation_init();
