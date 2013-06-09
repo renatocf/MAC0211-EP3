@@ -6,7 +6,7 @@
 DIR=$(pwd)
 
 # Recebe pacote do allegro 5.0.9
-if [ -e ${DIR}/download ]; then
+if ! [ -e ${DIR}/download ]; then
     sudo apt-get install wget
     wget http://sourceforge.net/projects/alleg/files/allegro/5.0.9/allegro-5.0.9.tar.gz/download
     # Checa erro no recebimento
@@ -17,7 +17,7 @@ if [ -e ${DIR}/download ]; then
     fi
 fi
 
-if [ -e ${DIR}/allegro-5.0.9.tar.gz ]; then
+if ! [ -e ${DIR}/allegro-5.0.9.tar.gz ]; then
     # Muda nome do dowload para .tar.gz
     mv ${DIR}/download allegro-5.0.9.tar.gz
 fi
@@ -61,6 +61,14 @@ fi
 sudo make install
 if [ $? -ne 0 ]; then
     echo "Verifique se há possibilidade de instalação como root"
+    exit
+fi
+
+# Liga bibliotecas para que apareçam disponíveis
+sudo ldconfig
+if [ $? -ne 0 ]; then
+    echo "Verifique se há possibilidade de root ou se houve
+          problemas com o ldconfig"
     exit
 fi
 

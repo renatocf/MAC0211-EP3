@@ -63,8 +63,9 @@ int old_left_margin = -1; int old_right_margin = -1;
 void river_animation_init()
 {
     gui_init();
-    gui_create_window(Config.length*5, Config.height*5);
+    gui_window_create(Config.length*5, Config.height*5);
 }
+
 void river_animation_generate(int seed)
 {
     /** VARIÁVEIS *****************************************************/
@@ -111,33 +112,31 @@ void river_animation_generate(int seed)
 int river_animation_iterate()
 {
     /** VARIÁVEIS *****************************************************/
-    TStrip top/*, bottom*/;
-    float flux = Config.flux;       /* Fluxo do rio              */
-    int length = Config.length;     /* Largura do grid           */
-    int zone = Config.zone;         /* Zona de conforto          */
-    Link new_node;
+        float flux = Config.flux;       /* Fluxo do rio              */
+        int length = Config.length;     /* Largura do grid           */
+        int zone = Config.zone;         /* Zona de conforto          */
+        Link new_node;                  /* Nódulo novo da lista      */
+        TStrip top;                     /* Faixa superior do rio     */
 
-    frame_height = 0; /* Zera altura do frame de impressão para o rio */
+        frame_height = 0; /* Zera altura do frame que imprime o rio */
 
     /** AVANÇA FAIXA DE TERRENO ***************************************/
-    /* Libera linha do topo do grid ('saindo da tela') */
-    new_node = list_prev(list_head(river));
-    list_remove(river, new_node);
+        /* Libera linha do topo do grid ('saindo da tela') */
+        new_node = list_prev(list_head(river));
+        list_remove(river, new_node);
 
-    /* Cria linha da base do grid ('entrando na tela') */
-    top = tstrip_generate(length, zone, flux, base, list_item(new_node));
-    base = top;
-    list_insert(river, new_node);
+        /* Cria linha da base do grid ('entrando na tela') */
+        top = tstrip_generate(length, zone, flux, base, list_item(new_node));
+        base = top; list_insert(river, new_node);
 
     /** IMPRIME RIO ***************************************************/
-    /* Elipse preenchido: x1, y1, raio x, raio y, cor */
+        /* Elipse preenchido: x1, y1, raio x, raio y, cor */
+        al_clear_to_color(al_map_rgb(0, 0, 0));
+        list_select(river, HEAD, strip_print);
+        gui_boat_create(Config.length*2.5, frame_height);
+        al_flip_display();
 
-    al_clear_to_color(al_map_rgb(0, 0, 0));
-    list_select(river, HEAD, strip_print);
-    gui_create_boat(Config.length*2.5, frame_height);
-    al_flip_display();
-
-    if(gui_close_window())
+    if(gui_window_destroy())
         return 1;
     return 0;
 }
@@ -155,49 +154,50 @@ void strip_print(TStrip strip)
     {
         /* Começo de rio -- sem um elemento anterior */
         if(old_left_margin== -1)
-            gui_create_land(i*5, frame_height);
+            gui_river_create_land(i*5, frame_height);
         if(i==Config.length-1 && old_right_margin == -1 )
-            gui_create_land(i*5, frame_height);
+            gui_river_create_land(i*5, frame_height);
         /* Terra seguida de água */
         else if(i!= Config.length-1 && strip[i].t == LAND && strip[i+1].t == WATER && (++control1)==1)
         {
             old_m_l = i;
             if(i > old_left_margin)
-                gui_create_margin_land_water(i*5, frame_height+5, (i+1)*5, frame_height+5, i*5, frame_height);
+                gui_river_create_margin(i*5, frame_height+5, (i+1)*5, frame_height+5, i*5, frame_height);
             else
-                gui_create_land(i*5, frame_height);
+                gui_river_create_land(i*5, frame_height);
         }
         /* terra seguida de água - pega a água depois de terra */
         else if(i!=0 && strip[i-1].t == LAND && strip[i].t == WATER && control1 == 1)
         {
             if(i-1 < old_left_margin)
-                gui_create_margin_land_water(i*5, frame_height, (i+1)*5, frame_height, i*5, frame_height+5);
+                gui_river_create_margin(i*5, frame_height, (i+1)*5, frame_height, i*5, frame_height+5);
             else
-                gui_create_water(i*5, frame_height);
+                gui_river_create_water(i*5, frame_height);
         }
         /* água seguida de terra */
         else if(i!=0 && strip[i].t == LAND && strip[i-1].t == WATER)
         {
             old_m_r = i;
             if(i < old_right_margin && ((k>=2 && control1 == 2) || (k<2 && control1 == 1)))
-                gui_create_margin_land_water((i+1)*5, frame_height+5, i*5, frame_height+5, (i+1)*5, frame_height);
+                gui_river_create_margin((i+1)*5, frame_height+5, i*5, frame_height+5, (i+1)*5, frame_height);
             else
-                gui_create_land(i*5, frame_height);
+                gui_river_create_land(i*5, frame_height);
         }
         /* água seguida de terra - analisa água antes de terra */
         else if(i!= Config.length-1 && strip[i].t == WATER && strip[i+1].t == LAND)
         {
             if(i+1 > old_right_margin&&  ((k>=2 && control1 == 2) || (k<2 && control1 == 1)))
-                gui_create_margin_land_water((i+1)*5, frame_height, i*5, frame_height, (i+1)*5, frame_height+5);
+                gui_river_create_margin((i+1)*5, frame_height, i*5, frame_height, (i+1)*5, frame_height+5);
             else
-                gui_create_water(i*5, frame_height);
+                gui_river_create_water(i*5, frame_height);
         }
         else if(strip[i].t == LAND)
-            gui_create_land(i * 5, frame_height);
+            gui_river_create_land(i * 5, frame_height);
         else if(strip[i].t == WATER)
-            gui_create_water(i * 5, frame_height);
+            gui_river_create_water(i * 5, frame_height);
 
     }
+    
     /*Velocidade do rio*/
     al_rest(1.4e-5);
 
@@ -210,6 +210,5 @@ void strip_print(TStrip strip)
 void river_animation_finish()
 {
     list_free(river);
-    river = NULL;
-    base = NULL;
+    river = NULL; base = NULL;
 }
