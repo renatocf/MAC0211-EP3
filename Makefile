@@ -83,6 +83,7 @@ LDFLAGS += $(filter -l%,$(patsubst lib%.a,-l%,$(LIBS))) \
 # DEFAULT ##############################################################
 .PHONY: all
 all: $(DEP) $(addprefix $(BINDIR)/,$(BIN))
+	echo $(LDFLAGS)
 -include $(DEP)
 
 .PHONY: install

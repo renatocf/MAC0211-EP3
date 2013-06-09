@@ -6,6 +6,7 @@
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 */
 /* Bibliotecas-padrão */
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -217,7 +218,6 @@ void strip_print(TStrip strip)
 
     /* Velocidade do rio */
     al_rest(pow(1.4, -1*Config.speedy/Config.height));
-
 
     old_left_margin = old_m_l;
     old_right_margin = old_m_r;
