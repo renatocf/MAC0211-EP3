@@ -28,7 +28,6 @@ struct conf
     int   zone;
     float prob_island;
     int   freq_island;
-    float speedy;
 };
 
 List river;

@@ -75,7 +75,6 @@ typedef struct options
     int s;    /* Semente */
     int f;    /* Frequência com que as ilhas aparecem
                  (em número de linhas) */
-    float v;  /* velocidade do rio */
 
     /* Nome da saída do relatório */
     char o[SIZE_NAME];
@@ -97,7 +96,6 @@ char help[] = "Jogo das canoas!\n"
               "-i: Probabilidade de haver ilha em determinada linha\n"
               "-s: Seed para a geração de números pseudo-aleatórios\n"
               "-f: Distancia mínima entre as ilhas\n"
-              "-v: Velocidade do rio\n"
               "-t: Modo de testes simples\n"
               "-T: Modo de testes completo\n"
               "-h: Ajuda\n"
@@ -131,7 +129,7 @@ int main(int argc, char **argv)
 
     /* Struct com argumentos da linha de comando */
     Options args = { FLUX, HEIGHT, LENGTH, ITERATIONS, ZONE, ISLAND,
-                     SEED, FREQ, SPEEDY, STDOUT, 0, 0, 0};
+                     SEED, FREQ, STDOUT, 0, 0, 0};
 
     /** ARGUMENTOS/MENU ***********************************************/
     func_err = receive_arguments(argc, argv, &args);
@@ -156,7 +154,6 @@ int main(int argc, char **argv)
     river_config_size    (args.L, args.H);
     river_config_island  (args.i, args.f);
     river_config_margins (args.Z);
-    river_config_speedy  (args.v);
 
     /** ANIMAÇÃO DO RIO ***********************************************/
     test_mode = args.t + args.T;
@@ -192,7 +189,7 @@ static int receive_arguments(int argc, char **argv, Options *args)
  * armazena na struct correspondente */
 {
     char opt; int i;
-    while((opt = getopt(argc, argv, "F:H:L:N:Z:v:i:s:f:o:tTh")) != NONE)
+    while((opt = getopt(argc, argv, "F:H:L:N:Z:i:s:f:o:tTh")) != NONE)
     {
         switch(opt)
         {
@@ -210,9 +207,6 @@ static int receive_arguments(int argc, char **argv, Options *args)
             break;
         case 'Z':
             args->Z = atoi(optarg);
-            break;
-        case 'v':
-            args->v = atof(optarg);
             break;
         case 'i':
             args->i = atof(optarg);
@@ -335,10 +329,6 @@ static void configurations(Options *args)
     printf(" Deseja configurar a largura do rio? "); scanf(" %c", &ans);
     if(ans == 's' || ans == 'y' || ans == 'S' || ans == 'Y')
     { printf(" Largura do rio: "); scanf("%d", &args->L); }
-
-    printf("Deseja configurar a velocidade do rio?"); scanf(" %c", &ans);
-    if(ans == 's' || ans == 'Y' || ans == 'S' || ans == 'Y')
-    { printf(" Velocidade do rio: "); scanf("%f", &args->v); }
 
     printf(" Deseja configurar a distância mínima entre as margens? "); scanf(" %c", &ans);
     if(ans == 's' || ans == 'y' || ans == 'S' || ans == 'Y')
