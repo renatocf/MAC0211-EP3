@@ -1,6 +1,7 @@
 # Binaries
 *~
 bin/
+conf/*.d
 conf/dependencies.mk
 
 # LaTeX
