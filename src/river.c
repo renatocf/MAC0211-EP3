@@ -212,7 +212,7 @@ void strip_print(TStrip strip)
     }
 
 
-    al_rest(1.4e-10);
+    al_rest(1.4e-5);
     old_left_margin = old_m_l;
     old_right_margin = old_m_r;
 

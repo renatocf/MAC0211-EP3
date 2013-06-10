@@ -42,8 +42,8 @@
 
 /* Padrões para a gerar o rio */
 #define FLUX       73.54
-#define HEIGHT     150
-#define LENGTH     100
+#define HEIGHT     130
+#define LENGTH     150
 #define ITERATIONS 10
 #define ZONE       10
 #define ISLAND     0.4
