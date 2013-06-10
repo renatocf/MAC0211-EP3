@@ -15,7 +15,7 @@ Renato Cordeiro Ferreira        7990933
 Ruan de Menezes Costa           7990929    
                                            
 Em caso de eventuais problemas, acesse:       
-https://github.com/renatocf/MAC0211-EP2/   
+https://github.com/renatocf/MAC0211-EP3
 
 #### INSTALAÇÃO ####
 
