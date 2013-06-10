@@ -32,7 +32,7 @@ INSTDIR := install
 VPATH = $(CONFDIR):$(SRCDIR):$(LIBDIR):$(BINDIR):$(TESTDIR):$(HEADDIR)
 
 # SOURCE ###############################################################
-BIN := canoa
+BIN := Canoagem
 SRC := $(notdir $(shell ls $(SRCDIR)/*.c))
 LIB := $(CONFDIR)/libraries.mk
 DEP := $(addprefix $(CONFDIR)/,$(SRC:.c=.d))
@@ -44,8 +44,8 @@ OBJ := $(addprefix $(OBJDIR)/,$(OBJ))         # Adiciona diretório
 
 # INSTALL ##############################################################
 USER     = $(shell whoami)
-ICON 	:= canoa.png
-DESKTOP := canoa.desktop
+ICON 	:= Canoagem.png
+DESKTOP := Canoagem.desktop
 
 ifeq ($(USER),root)
 INSTBIN = /usr/bin
@@ -53,8 +53,8 @@ INSTAPP = /usr/share/applications
 INSTICO = /usr/share/icons
 else
 INSTBIN = $(HOME)/.local/bin
-INSTAPP = $(HOME)/.local/applications
-INSTICO = $(HOME)/.local/icons
+INSTAPP = $(HOME)/.local/share/applications
+INSTICO = $(HOME)/.local/share/icons
 endif
 
 # COMPILATION ##########################################################
@@ -80,24 +80,28 @@ LDFLAGS += $(filter -l%,$(patsubst lib%.a,-l%,$(LIBS))) \
 #                            INSTALLATION                              #
 ########################################################################
 
-# DEFAULT ##############################################################
 .PHONY: all
 all: $(DEP) $(addprefix $(BINDIR)/,$(BIN))
-	echo $(LDFLAGS)
 -include $(DEP)
 
 .PHONY: install
 install:
-	@ echo "Configuring executable..."
-	@ chmod u+x $(BINDIR)/$(BIN)
-	@ $(MKDIR) $(INSTBIN)
-	@ $(CP) $(BINDIR)/$(BIN) $(INSTBIN)
-	@ echo "Creating desktop icon..."
-	@ $(MKDIR) $(INSTAPP)
-	@ $(CP) $(INSTDIR)/$(DESKTOP) $(INSTAPP)/
-	@ $(MKDIR) $(INSTICO)
-	@ $(CP) $(INSTDIR)/$(ICON) $(INSTICO)/
-	@ echo "Canoa successfully installed!"
+	 echo "Configuring executable..."
+	 chmod u+x $(BINDIR)/$(BIN)
+	 $(MKDIR) $(INSTBIN)
+	 $(CP) $(BINDIR)/$(BIN) $(INSTBIN)
+	 echo "Creating desktop icon..."
+	 $(MKDIR) $(INSTAPP)
+	 $(SED) -e 's|\$$(INSTBIN)|$(INSTBIN)|' \
+		-e 's|\$$(BIN)|$(BIN)|' \
+		-e 's|\$$(INSTICO)|$(INSTICO)|' \
+		-e 's|\$$(ICON)|$(ICON)' \
+		< $(INSTDIR)/$(DESKTOP) \
+		> $(INSTAPP)/$(DESKTOP)
+	# @ $(CP) $(INSTDIR)/$(DESKTOP) $(INSTAPP)/
+	 $(MKDIR) $(INSTICO)
+	 $(CP) $(INSTDIR)/$(ICON) $(INSTICO)/
+	 echo "Canoa successfully installed!"
 
 .PHONY: doc
 doc:

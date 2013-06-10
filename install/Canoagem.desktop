@@ -2,8 +2,8 @@
 Encoding=UTF-8
 Name=canoa
 Comment=Desvie sua canoa de obstáculos no rio!
-Exec=/usr/bin/canoa
-Icon=/usr/share/icons/canoa.png
+Exec=$(INSTBIN)/$(BIN)
+Icon=$(INSTICO)/$(ICON)
 Terminal=true
 Type=Application
 Categories=Games;ComputerScience;C;

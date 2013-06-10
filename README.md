@@ -7,7 +7,7 @@ MAC 0211 - Laboratório de Programação I
 IME-USP  - Primeiro  Semestre  de  2013   
 Turma 45 - Kelly Rosa Bragheto             
                                            
-Segundo Exercício-Programa:                
+Terceiro Exercício-Programa:                
 JOGO DAS CANOAS                            
                                            
 Karina Suemi Awoki              7572102    
@@ -24,5 +24,4 @@ terminal:
 
     $ make  
 
-que toda a documentação e o executável
-do jogo serão gerados.
+que o executável do jogo será gerado.
