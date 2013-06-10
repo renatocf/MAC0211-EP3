@@ -1,4 +1,4 @@
-MAC0211-EP2: Jogo das Canoas
+MAC0211-EP3: Jogo das Canoas
 ============================
 
 #### INFORMAÇÔES ####
