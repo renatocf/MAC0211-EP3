@@ -86,22 +86,21 @@ all: $(DEP) $(addprefix $(BINDIR)/,$(BIN))
 
 .PHONY: install
 install:
-	 echo "Configuring executable..."
-	 chmod u+x $(BINDIR)/$(BIN)
-	 $(MKDIR) $(INSTBIN)
-	 $(CP) $(BINDIR)/$(BIN) $(INSTBIN)
-	 echo "Creating desktop icon..."
-	 $(MKDIR) $(INSTAPP)
-	 $(SED) -e 's|\$$(INSTBIN)|$(INSTBIN)|' \
-		-e 's|\$$(BIN)|$(BIN)|' \
-		-e 's|\$$(INSTICO)|$(INSTICO)|' \
-		-e 's|\$$(ICON)|$(ICON)' \
-		< $(INSTDIR)/$(DESKTOP) \
-		> $(INSTAPP)/$(DESKTOP)
-	# @ $(CP) $(INSTDIR)/$(DESKTOP) $(INSTAPP)/
-	 $(MKDIR) $(INSTICO)
-	 $(CP) $(INSTDIR)/$(ICON) $(INSTICO)/
-	 echo "Canoa successfully installed!"
+	@ echo "Configuring executable..."
+	@ chmod u+x $(BINDIR)/$(BIN)
+	@ $(MKDIR) $(INSTBIN)
+	@ $(CP) $(BINDIR)/$(BIN) $(INSTBIN)
+	@ echo "Creating desktop icon..."
+	@ $(MKDIR) $(INSTAPP)
+	@ $(SED) -e 's|\$$(INSTBIN)|$(INSTBIN)|' \
+	 	-e 's|\$$(BIN)|$(BIN)|' \
+	 	-e 's|\$$(INSTICO)|$(INSTICO)|' \
+	 	-e 's|\$$(ICON)|$(ICON)|' \
+	 	< $(INSTDIR)/$(DESKTOP) \
+	 	> $(INSTAPP)/$(DESKTOP)
+	@ $(MKDIR) $(INSTICO)
+	@ $(CP) $(INSTDIR)/$(ICON) $(INSTICO)/
+	@ echo "Canoa successfully installed!"
 
 .PHONY: doc
 doc:

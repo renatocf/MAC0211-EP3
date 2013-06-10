@@ -1,6 +1,6 @@
 [Desktop Entry]
 Encoding=UTF-8
-Name=canoa
+Name=Canoagem
 Comment=Desvie sua canoa de obstáculos no rio!
 Exec=$(INSTBIN)/$(BIN)
 Icon=$(INSTICO)/$(ICON)
