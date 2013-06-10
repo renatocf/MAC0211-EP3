@@ -116,9 +116,6 @@ clean:
 	$(RM) $(SRCDIR)/*~ $(HEADDIR)/*~
 	$(RM) $(DEP)
 	-$(RMDIR) $(OBJDIR) 2> /dev/null
-ifneq ($(BINDIR),.)
-	@-$(MAKE) clean -C $(DOCDIR)
-endif
 
 .PHONY: distclean
 distclean:
